@@ -1,5 +1,5 @@
 name: stagedive
-description: stagedive is a complete standalone interpreter for a dialect of the original BASIC language.
+description: StageDive creates a template-based project for you
 author: Mike Mitterer <office@mikemitterer.at>
 homepage: https://github.com/MikeMitterer/dart-stagedive
 
