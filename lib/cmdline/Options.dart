@@ -8,6 +8,9 @@ class Options {
     static const _ARG_LOGLEVEL              = 'loglevel';
     static const _ARG_SETTINGS              = 'settings';
 
+    static const String _ARG_DIR            = 'dir';
+    static const String _ARG_LIST_TEMPLATES = 'list';
+
     final ArgParser _parser;
 
     Options() : _parser = Options._createParser();
@@ -38,6 +41,10 @@ class Options {
             ..addFlag(_ARG_SETTINGS,         abbr: 's', negatable: false, help: "Prints settings")
 
             ..addFlag(_ARG_HELP,             abbr: 'h', negatable: false, help: "Shows this message")
+
+            ..addFlag(_ARG_LIST_TEMPLATES,   abbr: 'l', negatable: false, help: "List available templates")
+
+            ..addOption(_ARG_DIR,            abbr: 'd', help: "Target folder")
 
             ..addOption(_ARG_LOGLEVEL,       abbr: 'v', help: "Sets the appropriate loglevel", allowed: ['info', 'debug', 'warning'])
 

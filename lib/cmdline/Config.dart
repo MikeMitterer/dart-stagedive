@@ -15,6 +15,7 @@ class Config {
     Config(this._argResults) {
 
         _settings[Options._ARG_LOGLEVEL]            = 'info';
+        _settings[Options._ARG_DIR]                 = '';
 
         _overwriteSettingsWithConfigFile();
         _overwriteSettingsWithArgResults();
@@ -26,6 +27,8 @@ class Config {
 
     String get loglevel => _settings[Options._ARG_LOGLEVEL];
 
+    String get dir => _settings[Options._ARG_DIR];
+
     List<String> get dirstoscan => _argResults.rest;
 
     Map<String,String> get settings {
@@ -36,9 +39,11 @@ class Config {
         settings["Config folder"]                           = configfolder;
         settings["Config file"]                             = configfile;
 
+        settings["Dir"]                                     = dir.isNotEmpty ? dir : "<not set>";
+
 
         if(dirstoscan.length > 0) {
-            settings["Dirs to scan"]                        = dirstoscan.join(", ");
+            settings["Template location"]                        = dirstoscan.join(", ");
         }
 
         return settings;
@@ -80,6 +85,10 @@ class Config {
 
         if(_argResults.wasParsed(Options._ARG_LOGLEVEL)) {
             _settings[Options._ARG_LOGLEVEL] = _argResults[Options._ARG_LOGLEVEL];
+        }
+
+        if(_argResults.wasParsed(Options._ARG_DIR)) {
+            _settings[Options._ARG_DIR] = _argResults[Options._ARG_DIR];
         }
 
     }

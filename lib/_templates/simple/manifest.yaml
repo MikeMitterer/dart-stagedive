@@ -1,0 +1,13 @@
+name: Simple Sample
+
+cat: Nicki
+
+prompts:
+  name:
+    type: input
+    question: "Add your name:"
+
+  age:
+    type: input
+    question: "Add your age:"
+

@@ -24,3 +24,7 @@ import 'package:args/args.dart';
 part "cmdline/Application.dart";
 part "cmdline/Config.dart";
 part "cmdline/Options.dart";
+
+part "generate/Prompter.dart";
+part "generate/Questions.dart";
+part "generate/Settings.dart";
