@@ -3,6 +3,9 @@ part of stagedive;
 class Application {
     final Logger _logger = new Logger("stagedive.Application");
 
+    static const String TEMPLATENAME = "templatename";
+
+
     /// Commandline options
     final Options options;
 
@@ -32,9 +35,9 @@ class Application {
 
             bool foundOptionToWorkWith = false;
 
-            if (config.dirstoscan.length == 1) {
+            if (config.projectdir.isNotEmpty && config.dirstoscan.length == 1) {
                 foundOptionToWorkWith = true;
-                _generateTemplate(config.dirstoscan.first, config.dir);
+                _generateTemplate(config);
             }
 
             if (!foundOptionToWorkWith) {
@@ -74,7 +77,7 @@ class Application {
                         final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
 
                         final String indention = loglevel == "debug" ? "    " : "";
-                        final String name = map["name"];
+                        final String name = map[TEMPLATENAME];
                         final String sampleName = ("'${name}'").padRight(30);
                         _logger.info("${indention}${sampleName} found in ${entity.path}");
                     }
@@ -83,9 +86,11 @@ class Application {
         });
     }
 
-    void _generateTemplate(final String templateFolder, String targetFolder) {
-        Validate.notBlank(templateFolder);
-        Validate.notBlank(targetFolder);
+    void _generateTemplate(final Config config) {
+        Validate.notNull(config);
+
+        final String templateFolder = config.dirstoscan.first;
+        final String targetFolder = config.projectdir;
 
         final Directory dirTemplate = new Directory(templateFolder.replaceFirst(new RegExp(r"/$"), ""));
         if (!dirTemplate.existsSync()) {
@@ -117,7 +122,7 @@ class Application {
 
         Setting name;
         try {
-            name = settings.firstWhere((final Setting setting) => setting.key == "name");
+            name = settings.firstWhere((final Setting setting) => setting.key == TEMPLATENAME);
         } on Error {
             _logger.shout("Invalid manifest-file. (No name specified!)");
             return;

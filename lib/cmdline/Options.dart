@@ -8,7 +8,7 @@ class Options {
     static const _ARG_LOGLEVEL              = 'loglevel';
     static const _ARG_SETTINGS              = 'settings';
 
-    static const String _ARG_DIR            = 'dir';
+    static const String _ARG_PROJECT_DIR    = 'projectfolder';
     static const String _ARG_LIST_TEMPLATES = 'list';
 
     final ArgParser _parser;
@@ -21,16 +21,17 @@ class Options {
     }
 
     void showUsage() {
-        print("Usage: $APPNAME [options]");
+        print("Usage: $APPNAME [options] <template folder>");
         _parser.usage.split("\n").forEach((final String line) {
             print("    $line");
         });
 
-        //        print("");
-        //        print("Sample:");
-        //        print("");
-        //        print("    'Generates the static site in your 'web-folder':       '$APPNAME -g'");
-        //        print("");
+        print("");
+        print("Sample:");
+        print("");
+        print("    Generate project in example/console:");
+        print("        '$APPNAME -p example/console packages/stagedive/_templates/console/'");
+        print("");
     }
 
     // -- private -------------------------------------------------------------
@@ -44,7 +45,7 @@ class Options {
 
             ..addFlag(_ARG_LIST_TEMPLATES,   abbr: 'l', negatable: false, help: "List available templates")
 
-            ..addOption(_ARG_DIR,            abbr: 'd', help: "Target folder")
+            ..addOption(_ARG_PROJECT_DIR,    abbr: 'p', help: "Project folder")
 
             ..addOption(_ARG_LOGLEVEL,       abbr: 'v', help: "Sets the appropriate loglevel", allowed: ['info', 'debug', 'warning'])
 

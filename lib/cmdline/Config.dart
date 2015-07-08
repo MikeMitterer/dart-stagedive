@@ -8,6 +8,7 @@ class Config {
     final Logger _logger = new Logger("stagedive.Config");
 
     static const String _CONFIG_FOLDER     = ".stagedive";
+    static const String _MANIFEST          = "manifest";
 
     final ArgResults _argResults;
     final Map<String,dynamic> _settings = new Map<String,dynamic>();
@@ -15,7 +16,8 @@ class Config {
     Config(this._argResults) {
 
         _settings[Options._ARG_LOGLEVEL]            = 'info';
-        _settings[Options._ARG_DIR]                 = '';
+        _settings[Options._ARG_PROJECT_DIR]         = '';
+        _settings[Config._MANIFEST]                 = 'manifest.yaml';
 
         _overwriteSettingsWithConfigFile();
         _overwriteSettingsWithArgResults();
@@ -27,7 +29,9 @@ class Config {
 
     String get loglevel => _settings[Options._ARG_LOGLEVEL];
 
-    String get dir => _settings[Options._ARG_DIR];
+    String get projectdir => _settings[Options._ARG_PROJECT_DIR];
+
+    String get manifestfile => _settings[Config._MANIFEST];
 
     List<String> get dirstoscan => _argResults.rest;
 
@@ -39,11 +43,12 @@ class Config {
         settings["Config folder"]                           = configfolder;
         settings["Config file"]                             = configfile;
 
-        settings["Dir"]                                     = dir.isNotEmpty ? dir : "<not set>";
+        settings["Project folder"]                          = projectdir.isNotEmpty ? projectdir : "<not set>";
+        settings["Manifest file"]                           = manifestfile;
 
 
         if(dirstoscan.length > 0) {
-            settings["Template location"]                        = dirstoscan.join(", ");
+            settings["Template location"]                   = dirstoscan.join(", ");
         }
 
         return settings;
@@ -87,8 +92,8 @@ class Config {
             _settings[Options._ARG_LOGLEVEL] = _argResults[Options._ARG_LOGLEVEL];
         }
 
-        if(_argResults.wasParsed(Options._ARG_DIR)) {
-            _settings[Options._ARG_DIR] = _argResults[Options._ARG_DIR];
+        if(_argResults.wasParsed(Options._ARG_PROJECT_DIR)) {
+            _settings[Options._ARG_PROJECT_DIR] = _argResults[Options._ARG_PROJECT_DIR];
         }
 
     }

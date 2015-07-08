@@ -21,13 +21,18 @@ Uninstall
 ## Usage
 
 ```shell
-Usage: stagedive [options]
-    -s, --settings    Prints settings
-    -h, --help        Shows this message
-    -l, --list        List available templates
-    -d, --dir         Target folder
-    -v, --loglevel    Sets the appropriate loglevel
-                      [info, debug, warning]
+Usage: stagedive [options] <template folder>
+    -s, --settings         Prints settings
+    -h, --help             Shows this message
+    -l, --list             List available templates
+    -p, --projectfolder    Project folder
+    -v, --loglevel         Sets the appropriate loglevel
+                           [info, debug, warning]
+
+Sample:
+
+    Generate project in example/console:
+        'stagedive -p example/console packages/stagedive/_templates/console/'
 ```
 
 `stagedive -l` - Scans your packages folder for \_template subfolders.  
@@ -35,15 +40,39 @@ If it finds a \_template folder it scans for subfolders with manifest.yaml.
 At the moment the only packages that has a \_template folder is StageDive but you
 can define your own \_templates in your package.
 
-Try `stagedive -d example/console packages/stagedive/_templates/console/` 
+Try `stagedive -p example/console packages/stagedive/_templates/console/` 
 This command will prompt you for your name and your email address.  
 
 StageDive creates the appropriate sample in example/console.
 
 StageDive takes all variables defined in the manifest.yaml and replaces the according template fields.  
+There is one extra variable: `basename` 
+`basename` is the last part of the project folder you specified with -p.  
+ 
 File-Content-Format: `<%= varname %>`  
 File-Name-Format: `{varname}`
 
+### Sample manifest.yaml
+
+```yaml
+#templatename is not optional!
+templatename: Simple Console
+
+prompts:
+  name:
+    type: input
+    question: "Add your name:"
+
+  email:
+    type: input
+    question: "Your email address:"
+```
+
+At the moment the there are two input types: `input` and `lowercase`.
+
+- `input`:      Asks you the 'question' and stores the answer in the defined variable.
+- `lowercase`:  Same as input but changes the answer to lowercase.
+ 
 ### License
   
       Copyright 2015 Michael Mitterer (office@mikemitterer.at),
