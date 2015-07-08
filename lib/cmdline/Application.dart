@@ -110,6 +110,9 @@ class Application {
         }
 
         final List<Setting> settings = new List<Setting>();
+        final String basename = path.basename(dirTargetBase.path);
+
+        settings.add(new Setting("basename",basename));
         settings.addAll((new SettingsFromManifest(manifest)).settings);
 
         Setting name;
@@ -155,7 +158,8 @@ class Application {
                     }
                     else {
                         final File src = new File(entity.path);
-                        final File target = new File("${dirTargetBase.path}/${entityPath}");
+                        final String targetFilename = _setVarInTargetFilename(settings,"${dirTargetBase.path}/${entityPath}");
+                        final File target = new File(targetFilename);
 
                         _logger.fine("Copy: ${src.path} -> ${target.path}");
                         String contents = src.readAsStringSync();
@@ -193,5 +197,15 @@ class Application {
         }
 
         Logger.root.onRecord.listen(new LogPrintHandler(messageFormat: "%m"));
+    }
+
+    String _setVarInTargetFilename(final List<Setting> settings, String filename) {
+        settings.forEach((final Setting setting) {
+            if(filename.indexOf("{${setting.key}") != -1) {
+                filename = filename.replaceAll("{${setting.key}}",setting.value);
+            }
+        });
+
+        return filename;
     }
 }

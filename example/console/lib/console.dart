@@ -4,7 +4,7 @@
 /// The dasic library.
 ///
 /// This is an awesome library. More dartdocs go here.
-library stagedive;
+library console;
 
 import 'dart:io';
 import 'dart:async';
@@ -17,7 +17,6 @@ import 'package:logging_handlers/logging_handlers_shared.dart';
 
 import 'package:validate/validate.dart';
 import "package:yaml/yaml.dart" as yaml;
-import "package:path/path.dart" as path;
 
 import 'package:intl/intl.dart';
 import 'package:args/args.dart';
@@ -25,7 +24,3 @@ import 'package:args/args.dart';
 part "cmdline/Application.dart";
 part "cmdline/Config.dart";
 part "cmdline/Options.dart";
-
-part "generate/Prompter.dart";
-part "generate/Questions.dart";
-part "generate/Settings.dart";

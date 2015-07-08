@@ -1,1 +1,0 @@
-Hallo <%= name %>, dies ist ein TEST! Du bis <%= age %> Jahre alt!
