@@ -1,0 +1,31 @@
+name: stagedive
+description: stagedive is a complete standalone interpreter for a dialect of the original BASIC language.
+author: Mike Mitterer <office@mikemitterer.at>
+homepage: https://github.com/MikeMitterer/dart-stagedive
+
+version: 1.0.0
+
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+
+# Add the bin/stagedive.dart script to the scripts pub installs.
+# Activate local repo:
+#   pub global activate --source path .
+#
+executables:
+  stagedive:
+
+dependencies:
+  browser: any
+
+  logging: any
+  logging_handlers: any
+  console_log_handler: any
+
+  validate: any
+
+  args: any
+  yaml: any
+
+dev_dependencies:
+  test: any
