@@ -35,6 +35,10 @@ Sample:
         'stagedive -p example/console packages/stagedive/_templates/console/'
 ```
 
+### Important
+At the moment StageDive needs a 'packages' folder where it searches for templates!
+There is an **experimental** solution that scans your hosted!!!! packages...
+
 `stagedive -l` - Scans your packages folder for \_template subfolders.  
 If it finds a \_template folder it scans for subfolders with manifest.yaml.  
 At the moment the only packages that has a \_template folder is StageDive but you

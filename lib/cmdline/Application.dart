@@ -58,9 +58,13 @@ class Application {
     void _listTemplates(final String loglevel) {
         Validate.notBlank(loglevel);
 
-        final Directory packages = new Directory("packages");
-        if(!packages.existsSync()) {
-            _logger.warning("No packages folder found!");
+
+        Directory packages;
+        try {
+            packages = new Directory(_getPackagesFolder());
+        } on ArgumentError catch(e) {
+            _logger.shout(e.message);
+            return;
         }
 
         packages.listSync().where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
@@ -212,5 +216,18 @@ class Application {
         });
 
         return filename;
+    }
+
+    String _getPackagesFolder() {
+        Directory packages = new Directory("packages");
+        if(!packages.existsSync()) {
+            _logger.warning("'packages' folder not found!");
+            //return;
+        }
+        packages = new Directory("../../hosted/pub.dartlang.org/stagedive-0.0.2");
+        if(!packages.existsSync()) {
+            throw new ArgumentError("${packages.path} not available. Gave up!");
+        }
+        return packages.path;
     }
 }
