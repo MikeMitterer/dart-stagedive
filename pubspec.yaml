@@ -27,7 +27,7 @@ dependencies:
   args: any
   yaml: any
 
-  pub_cache: "^0.0.1+2"
+  pub_cache: "0.0.1+2"
 
 dev_dependencies:
   test: any
