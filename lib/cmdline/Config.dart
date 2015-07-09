@@ -16,7 +16,11 @@ class Config {
     Config(this._argResults) {
 
         _settings[Options._ARG_LOGLEVEL]            = 'info';
-        _settings[Options._ARG_PROJECT_DIR]         = '';
+
+        _settings[Options._ARG_NEW_PROJECT_DIR]     = '';
+        _settings[Options._ARG_TEMPLATE_PROJECT]    = '';
+        _settings[Options._ARG_TEMPLATE]            = '';
+
         _settings[Config._MANIFEST]                 = 'manifest.yaml';
 
         _overwriteSettingsWithConfigFile();
@@ -29,7 +33,9 @@ class Config {
 
     String get loglevel => _settings[Options._ARG_LOGLEVEL];
 
-    String get projectdir => _settings[Options._ARG_PROJECT_DIR];
+    String get newprojectdir => _settings[Options._ARG_NEW_PROJECT_DIR];
+    String get templateproject => _settings[Options._ARG_TEMPLATE_PROJECT];
+    String get template => _settings[Options._ARG_TEMPLATE];
 
     String get manifestfile => _settings[Config._MANIFEST];
 
@@ -43,7 +49,10 @@ class Config {
         settings["Config folder"]                           = configfolder;
         settings["Config file"]                             = configfile;
 
-        settings["Project folder"]                          = projectdir.isNotEmpty ? projectdir : "<not set>";
+        settings["New project folder"]                      = newprojectdir.isNotEmpty ? newprojectdir : "<not set>";
+        settings["Template project"]                        = templateproject.isNotEmpty ? templateproject : "<not set>";
+        settings["Templatename"]                            = template.isNotEmpty ? template : "<not set>";
+
         settings["Manifest file"]                           = manifestfile;
 
 
@@ -92,10 +101,17 @@ class Config {
             _settings[Options._ARG_LOGLEVEL] = _argResults[Options._ARG_LOGLEVEL];
         }
 
-        if(_argResults.wasParsed(Options._ARG_PROJECT_DIR)) {
-            _settings[Options._ARG_PROJECT_DIR] = _argResults[Options._ARG_PROJECT_DIR];
+        if(_argResults.wasParsed(Options._ARG_NEW_PROJECT_DIR)) {
+            _settings[Options._ARG_NEW_PROJECT_DIR] = _argResults[Options._ARG_NEW_PROJECT_DIR];
         }
 
+        if(_argResults.wasParsed(Options._ARG_TEMPLATE_PROJECT)) {
+            _settings[Options._ARG_TEMPLATE_PROJECT] = _argResults[Options._ARG_TEMPLATE_PROJECT];
+        }
+
+        if(_argResults.wasParsed(Options._ARG_TEMPLATE)) {
+            _settings[Options._ARG_TEMPLATE] = _argResults[Options._ARG_TEMPLATE];
+        }
     }
 
     void _overwriteSettingsWithConfigFile() {

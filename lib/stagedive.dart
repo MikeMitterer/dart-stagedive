@@ -19,6 +19,8 @@ import 'package:validate/validate.dart';
 import "package:yaml/yaml.dart" as yaml;
 import "package:path/path.dart" as path;
 
+import 'package:pub_cache/pub_cache.dart';
+
 import 'package:intl/intl.dart';
 import 'package:args/args.dart';
 

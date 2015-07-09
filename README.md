@@ -1,5 +1,5 @@
 # StageDive - Template-Base project generator
-### Use your own variables for your templates
+### Define your own variables for your templates
 
 ## Install
 Install
@@ -21,37 +21,38 @@ Uninstall
 ## Usage
 
 ```shell
-Usage: stagedive [options] <template folder>
-    -s, --settings         Prints settings
-    -h, --help             Shows this message
-    -l, --list             List available templates
-    -p, --projectfolder    Project folder
-    -v, --loglevel         Sets the appropriate loglevel
-                           [info, debug, warning]
+Usage: stagedive -n <new project folder> -p <template project> -t <template name>
+    -s, --settings           Prints settings
+    -h, --help               Shows this message
+    -l, --list               List available templates
+    -n, --newprojectdir      New project folder
+    -p, --templateproject    Template project (e.g. stagedive)
+    -t, --template           Template name (e.g. console)
+    -v, --loglevel           Sets the appropriate loglevel
+                             [info, debug, warning]
 
 Sample:
 
     Generate project in example/console:
-        'stagedive -p example/console packages/stagedive/_templates/console/'
+        'stagedive -n example/console -p stagedive -t console'
 ```
 
 ### Important
-At the moment StageDive needs a 'packages' folder where it searches for templates!
-There is an **experimental** solution that scans your hosted!!!! packages...
+StageDive scans your installed packages (pub-cache). This means it does not work for local packages.
 
-`stagedive -l` - Scans your packages folder for \_template subfolders.  
-If it finds a \_template folder it scans for subfolders with manifest.yaml.  
+`stagedive -l` - List the available templates  
+It looks for a template in lib\_templates. If it finds a \_template folder it scans for subfolders with manifest.yaml.  
 At the moment the only packages that has a \_template folder is StageDive but you
-can define your own \_templates in your package.
+can define your own \_templates-folder in your package.
 
-Try `stagedive -p example/console packages/stagedive/_templates/console/` 
+Try `stagedive -n example/console -p stagedive -t console` 
 This command will prompt you for your name and your email address.  
 
 StageDive creates the appropriate sample in example/console.
 
 StageDive takes all variables defined in the manifest.yaml and replaces the according template fields.  
 There is one extra variable: `basename` 
-`basename` is the last part of the project folder you specified with -p.  
+`basename` is the name you specify with the -t option.  
  
 File-Content-Format: `<%= varname %>`  
 File-Name-Format: `{varname}`

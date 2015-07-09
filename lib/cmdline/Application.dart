@@ -1,5 +1,15 @@
 part of stagedive;
 
+class _TemplateInfo {
+    final String package;
+    final String version;
+    final String templatePath;
+
+    _TemplateInfo(this.package, this.version, this.templatePath);
+
+    String get basename => path.basename(templatePath);
+}
+
 class Application {
     final Logger _logger = new Logger("stagedive.Application");
 
@@ -29,13 +39,13 @@ class Application {
             }
 
             if (argResults.wasParsed(Options._ARG_LIST_TEMPLATES)) {
-                _listTemplates(config.loglevel);
+                _listTemplates(config);
                 return;
             }
 
             bool foundOptionToWorkWith = false;
 
-            if (config.projectdir.isNotEmpty && config.dirstoscan.length == 1) {
+            if (config.newprojectdir.isNotEmpty && config.templateproject.isNotEmpty && config.template.isNotEmpty) {
                 foundOptionToWorkWith = true;
                 _generateTemplate(config);
             }
@@ -55,37 +65,20 @@ class Application {
 
     // -- private -------------------------------------------------------------
 
-    void _listTemplates(final String loglevel) {
-        Validate.notBlank(loglevel);
+    void _listTemplates(final Config config) {
+        Validate.notNull(config);
 
+        final List<_TemplateInfo> templateInfos = _getTemplateInfos(config);
 
-        Directory packages;
-        try {
-            packages = new Directory(_getPackagesFolder());
-        } on ArgumentError catch(e) {
-            _logger.shout(e.message);
-            return;
-        }
+        templateInfos.forEach((final _TemplateInfo templateinfo) {
+            final File manifest = new File("${templateinfo.templatePath}/manifest.yaml");
+            if(manifest.existsSync()) {
+                final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
 
-        packages.listSync().where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
-            .forEach((final FileSystemEntity entity) {
-
-            _logger.fine("Checking: ${entity.path}");
-            final Directory templates = new Directory("${entity.path}/_templates");
-            if(templates.existsSync()) {
-                templates.listSync().where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
-                    .forEach((final FileSystemEntity entity) {
-
-                    final File manifest = new File("${entity.path}/manifest.yaml");
-                    if(manifest.existsSync()) {
-                        final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
-
-                        final String indention = loglevel == "debug" ? "    " : "";
-                        final String name = map[TEMPLATENAME];
-                        final String sampleName = ("'${name}'").padRight(30);
-                        _logger.info("${indention}${sampleName} found in ${entity.path}");
-                    }
-                });
+                final String indention = config.loglevel == "debug" ? "    " : "";
+                final String name = map[TEMPLATENAME];
+                final String sampleName = ("'${name}'").padRight(30);
+                _logger.info("${indention}${sampleName} Package: ${templateinfo.package}, Template name: ${templateinfo.basename}, Version: ${templateinfo.version}");
             }
         });
     }
@@ -93,12 +86,26 @@ class Application {
     void _generateTemplate(final Config config) {
         Validate.notNull(config);
 
-        final String templateFolder = config.dirstoscan.first;
-        final String targetFolder = config.projectdir;
+        final List<_TemplateInfo> templateInfos = _getTemplateInfos(config);
 
-        final Directory dirTemplate = new Directory(templateFolder.replaceFirst(new RegExp(r"/$"), ""));
+        _TemplateInfo templateinfo;
+        try {
+
+            templateinfo = templateInfos.firstWhere( (final _TemplateInfo check) {
+                //_logger.info("${check.package.name},${check.basename} - ${config.templateproject},${config.template}");
+                return check.package == config.templateproject && check.basename == config.template;
+            });
+
+        } on Error {
+            _logger.shout("Could not find a Template for ${config.templateproject}/${config.template}");
+            return;
+        }
+
+        final String targetFolder = config.newprojectdir;
+
+        final Directory dirTemplate = new Directory(templateinfo.templatePath.replaceFirst(new RegExp(r"/$"), ""));
         if (!dirTemplate.existsSync()) {
-            _logger.shout("$templateFolder does not exist!");
+            _logger.shout("${dirTemplate.path} does not exist!");
             return;
         }
 
@@ -218,16 +225,42 @@ class Application {
         return filename;
     }
 
-    String _getPackagesFolder() {
-        Directory packages = new Directory("packages");
-        if(!packages.existsSync()) {
-            _logger.warning("'packages' folder not found!");
-            //return;
-        }
-        packages = new Directory("../../hosted/pub.dartlang.org/stagedive-0.0.2");
-        if(!packages.existsSync()) {
-            throw new ArgumentError("${packages.path} not available. Gave up!");
-        }
-        return packages.path;
+    List<_TemplateInfo> _getTemplateInfos(final Config config) {
+        final List<_TemplateInfo> templates = new List<_TemplateInfo>();
+
+        final PubCache cache = new PubCache();
+        _logger.fine(PubCache.getSystemCacheLocation().absolute);
+
+        String packageName = "";
+        cache.getPackageRefs().forEach((final PackageRef ref) {
+            if(packageName != ref.name) {
+                packageName = ref.name;
+                final PackageRef latest = cache.getLatestVersion(packageName);
+                final Package package = latest.resolve();
+                final Directory dirTemplates = new Directory("${package.location.absolute.path}/lib/_templates");
+
+                _logger.fine("Scanning ${package.location.absolute.path}...");
+                if(dirTemplates.existsSync()) {
+                    dirTemplates.listSync().where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
+                        .forEach((final FileSystemEntity entity) {
+
+                        final File manifest = new File("${entity.path}/manifest.yaml");
+                        if(manifest.existsSync()) {
+                            final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
+
+                            final String name = map[TEMPLATENAME];
+                            // final String sampleName = ("'${name}'").padRight(30);
+                            //_logger.info("${sampleName} - Package: ${package.name}, Version: ${package.version}, Path: ${entity.absolute.path}");
+
+                            templates.add(new _TemplateInfo(package.name,package.version.toString(),entity.path));
+                        }
+                    });
+
+                }
+            }
+        });
+
+
+        return templates;
     }
 }
