@@ -3,7 +3,7 @@ description: StageDive creates a template-based project for you
 author: Mike Mitterer <office@mikemitterer.at>
 homepage: https://github.com/MikeMitterer/dart-stagedive
 
-version: 0.1.0
+version: 0.2.0
 
 environment:
   sdk: '>=1.0.0 <2.0.0'

@@ -1,6 +1,11 @@
 #Change Log for stagedive#
 StageDive creates a template-based project for you
 
+##[v0.2.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.1.0...v0.2.0) - 2015-07-09##
+
+###Feature###
+* Config to scan local templates [21c8ef4](https://github.com/mikemitterer/dart-stagedive/commit/21c8ef42992b4e9eb9d76a445d5e628e68f17f15)
+
 ##[v0.1.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.0.3...v0.1.0) - 2015-07-09##
 
 ###Feature###
