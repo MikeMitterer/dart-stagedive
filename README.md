@@ -37,9 +37,6 @@ Sample:
         'stagedive -n example/console -p stagedive -t console'
 ```
 
-### Important
-StageDive scans your installed packages (pub-cache). This means it does not work for local packages.
-
 `stagedive -l` - List the available templates  
 It looks for a template in lib\_templates. If it finds a \_template folder it scans for subfolders with manifest.yaml.  
 At the moment the only packages that has a \_template folder is StageDive but you
@@ -77,6 +74,17 @@ At the moment the there are two input types: `input` and `lowercase`.
 
 - `input`:      Asks you the 'question' and stores the answer in the defined variable.
 - `lowercase`:  Same as input but changes the answer to lowercase.
+
+### Important
+StageDive scans your installed packages (pub-cache).  
+This means StageDive does not recognize your local package. ('path:' in pubspec.yaml)  
+
+**But there is a solution:**  
+In your project folder, create `.stagedive/config.yaml`
+```yaml
+templatefolder: lib/_templates
+```
+With this - StageDive knows how to find your local templates!
  
 ### License
   

@@ -77,8 +77,10 @@ class Application {
 
                 final String indention = config.loglevel == "debug" ? "    " : "";
                 final String name = map[TEMPLATENAME];
-                final String sampleName = ("'${name}'").padRight(30);
-                _logger.info("${indention}${sampleName} Package: ${templateinfo.package}, Template name: ${templateinfo.basename}, Version: ${templateinfo.version}");
+                final String sampleName = ("'${name}'").padRight(20);
+                _logger.info("${indention}${sampleName} Package: ${templateinfo.package.padRight(15)}"
+                                                        "Template name: ${templateinfo.basename.padRight(15)}"
+                                                        "Version: ${templateinfo.version}");
             }
         });
     }
@@ -231,6 +233,23 @@ class Application {
         final PubCache cache = new PubCache();
         _logger.fine(PubCache.getSystemCacheLocation().absolute);
 
+        void _scan(final String packagename,final String packageversion, final Directory dirTemplates) {
+            dirTemplates.listSync().where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
+            .forEach((final FileSystemEntity entity) {
+
+                final File manifest = new File("${entity.path}/manifest.yaml");
+                if(manifest.existsSync()) {
+                    final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
+
+                    final String name = map[TEMPLATENAME];
+                    // final String sampleName = ("'${name}'").padRight(30);
+                    //_logger.info("${sampleName} - Package: ${package.name}, Version: ${package.version}, Path: ${entity.absolute.path}");
+
+                    templates.add(new _TemplateInfo(packagename,packageversion.toString(),entity.path));
+                }
+            });
+        }
+
         String packageName = "";
         cache.getPackageRefs().forEach((final PackageRef ref) {
             if(packageName != ref.name) {
@@ -241,26 +260,19 @@ class Application {
 
                 _logger.fine("Scanning ${package.location.absolute.path}...");
                 if(dirTemplates.existsSync()) {
-                    dirTemplates.listSync().where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
-                        .forEach((final FileSystemEntity entity) {
-
-                        final File manifest = new File("${entity.path}/manifest.yaml");
-                        if(manifest.existsSync()) {
-                            final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
-
-                            final String name = map[TEMPLATENAME];
-                            // final String sampleName = ("'${name}'").padRight(30);
-                            //_logger.info("${sampleName} - Package: ${package.name}, Version: ${package.version}, Path: ${entity.absolute.path}");
-
-                            templates.add(new _TemplateInfo(package.name,package.version.toString(),entity.path));
-                        }
-                    });
-
+                    _scan(package.name,package.version.toString(),dirTemplates);
                 }
             }
         });
 
-
+        final File conf = new File("${config.configfolder}/${config.configfile}");
+        if(conf.existsSync()) {
+            final yaml.YamlMap map = yaml.loadYaml(conf.readAsStringSync());
+            if(map["templatefolder"] != null && path.basename(map["templatefolder"]) == "_templates") {
+                final Directory dirTemplates = new Directory(map["templatefolder"]);
+                _scan("local","<not defined>",dirTemplates);
+            }
+        }
         return templates;
     }
 }
