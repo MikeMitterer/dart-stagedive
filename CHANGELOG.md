@@ -1,6 +1,11 @@
 #Change Log for stagedive#
 StageDive creates a template-based project for you
 
+##[v0.1.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.0.3...v0.1.0) - 2015-07-09##
+
+###Feature###
+* Scans pub-cach [81cd6ee](https://github.com/mikemitterer/dart-stagedive/commit/81cd6eedadcb1aaa5f0336c42dc64e02b884a811)
+
 ##[v0.0.3](http://github.com/mikemitterer/dart-stagedive/compare/v0.0.2...v0.0.3) - 2015-07-09##
 
 ###Feature###
