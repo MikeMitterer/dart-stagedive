@@ -31,10 +31,11 @@ class Question {
     final InputType type;
     final String name;
     final String question;
+    final String hint;
 
     String result = "";
 
-    Question(this.type, this.name, this.question);
+    Question(this.type, this.name, this.question,this.hint);
 }
 
 class QuestionsFromManifest implements Questions {
@@ -60,7 +61,12 @@ class QuestionsFromManifest implements Questions {
                 _logger.fine("        ${key}: ${node.value[key]}");
             });
 
-            _questions.add(new Question(_getType( map["type"]), name, (node as yaml.YamlMap)["question"]));
+            _questions.add(new Question(
+                _getType( map["type"]),
+                    name,
+                    (node as yaml.YamlMap)["question"],
+                    _getHint((node as yaml.YamlMap)["hint"]))
+            );
         });
 
 
@@ -79,6 +85,15 @@ class QuestionsFromManifest implements Questions {
                 return InputType.LOWERCASE;
             default:
                 return defaultType;
+        }
+    }
+
+    String _getHint(final String fieldvalue) {
+        if(fieldvalue == null) {
+            return "";
+        }
+        else {
+            return fieldvalue;
         }
     }
 }

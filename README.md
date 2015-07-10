@@ -1,6 +1,9 @@
 # StageDive - Template-Base project generator
 ### Define your own variables for your templates
 
+## New
+You can define "hints" for your questions!
+
 ## Install
 Install
 ```shell
@@ -64,7 +67,8 @@ prompts:
   name:
     type: input
     question: "Add your name:"
-
+    hint: "Used for the pubspec 'name:' field"
+    
   email:
     type: input
     question: "Your email address:"

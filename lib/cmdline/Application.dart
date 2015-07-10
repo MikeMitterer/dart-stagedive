@@ -10,11 +10,22 @@ class _TemplateInfo {
     String get basename => path.basename(templatePath);
 }
 
+class _Manifest {
+    /// Field for Template-Name in Manifest
+    static const String TEMPLATENAME = "templatename";
+
+    /// Field to determine if this template is private (not available if using pub-cache)
+    static const String PRIVATE_TEMPLATE = "keeptemplateprivate";
+
+}
 class Application {
     final Logger _logger = new Logger("stagedive.Application");
 
-    static const String TEMPLATENAME = "templatename";
+    /// If using config.yaml for additional packages - this is the default package-name for such packages
+    static const String _LOCAL_PACKAGE_NAME = "local";
 
+    /// If using config.yaml we have no version - use this instead
+    static const String _LOCAL_PACKAGE_VERSION = "<not defined>";
 
     /// Commandline options
     final Options options;
@@ -76,7 +87,7 @@ class Application {
                 final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
 
                 final String indention = config.loglevel == "debug" ? "    " : "";
-                final String name = map[TEMPLATENAME];
+                final String name = map[_Manifest.TEMPLATENAME];
                 final String sampleName = ("'${name}'").padRight(25);
                 _logger.info("${indention}${sampleName} Package: ${templateinfo.package.padRight(15)}"
                                                         "Template name: ${templateinfo.basename.padRight(15)}"
@@ -135,7 +146,7 @@ class Application {
 
         Setting name;
         try {
-            name = settings.firstWhere((final Setting setting) => setting.key == TEMPLATENAME);
+            name = settings.firstWhere((final Setting setting) => setting.key == _Manifest.TEMPLATENAME);
         } on Error {
             _logger.shout("Invalid manifest-file. (No name specified!)");
             return;
@@ -191,7 +202,7 @@ class Application {
 
                             target.writeAsStringSync(contents);
 
-                        } on FileSystemException catch(e) {
+                        } on FileSystemException {
                             // OK - if readAsString does not work - just copy it!
                             src.copySync(target.path);
                         }
@@ -255,11 +266,19 @@ class Application {
                 if(manifest.existsSync()) {
                     final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
 
-                    final String name = map[TEMPLATENAME];
-                    // final String sampleName = ("'${name}'").padRight(30);
-                    //_logger.info("${sampleName} - Package: ${package.name}, Version: ${package.version}, Path: ${entity.absolute.path}");
+                    final String name = map[_Manifest.TEMPLATENAME];
 
-                    templates.add(new _TemplateInfo(packagename,packageversion.toString(),entity.path));
+                    // Add it only if TEMPLATENAME (templatename) is available
+                    if(name != null) {
+                        final bool isPrivate = map[_Manifest.PRIVATE_TEMPLATE] != null && map[_Manifest.PRIVATE_TEMPLATE] == true;
+
+                        // final String sampleName = ("'${name}'").padRight(30);
+                        //_logger.info("${sampleName} - Package: ${package.name}, Version: ${package.version}, Path: ${entity.absolute.path}");
+
+                        if(isPrivate == false || packagename == _LOCAL_PACKAGE_NAME) {
+                            templates.add(new _TemplateInfo(packagename,packageversion.toString(),entity.path));
+                        }
+                    }
                 }
             });
         }
@@ -295,7 +314,7 @@ class Application {
                 }
                 folders.forEach((final String foldername) {
                     final Directory dirTemplates = new Directory(foldername);
-                    _scan("local","<not defined>",dirTemplates);
+                    _scan(_LOCAL_PACKAGE_NAME,_LOCAL_PACKAGE_VERSION,dirTemplates);
                 });
             }
         }

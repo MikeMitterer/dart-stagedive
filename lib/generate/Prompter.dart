@@ -31,10 +31,30 @@ class Prompter {
     void ask(final List<Question> questions) {
         Validate.notNull(questions);
 
+        if(questions.isNotEmpty) {
+            _logger.info("Please anser the followoing questions");
+            _logger.info("If the question has a [?] sign it shows a hint if you enter a question mark\n");
+        }
         questions.forEach( (final Question question) {
 
-            stdout.write("${question.question} ");
-            final String result = stdin.readLineSync();
+            String result = "";
+            int questionCounter = 0;
+            do {
+                final String askThisQuestion = "  ${question.question}${question.hint.isNotEmpty ? ' [?]' : ""} ";
+
+                stdout.write(askThisQuestion);
+                result = stdin.readLineSync().trim();
+                if(result == "?" && question.hint.isNotEmpty) {
+                    _logger.info("    - ${question.hint}\n");
+                }
+
+                questionCounter++;
+            } while(result == "?" && questionCounter < 5);
+
+            if(questionCounter == 5) {
+                throw new ArgumentError("Hmmm... 5 times the same action with the same result...");
+            }
+
             if(result.isEmpty) {
                 throw new ArgumentError("The answer to '${question.question}' may not be empty - sorry!");
             }
