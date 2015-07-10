@@ -1,6 +1,14 @@
 #Change Log for stagedive#
 StageDive creates a template-based project for you
 
+##[v0.3.1](http://github.com/mikemitterer/dart-stagedive/compare/v0.3.0...v0.3.1) - 2015-07-10##
+
+###Feature###
+* Promper shows input-field-markers, UPPERCASE-Type support [fd70c95](https://github.com/mikemitterer/dart-stagedive/commit/fd70c95a8286093b20af2361c76c022741554981)
+
+###Docs###
+* Readme [f092bbc](https://github.com/mikemitterer/dart-stagedive/commit/f092bbc68302196eaca68b6a970f1de7efb0e7ce)
+
 ##[v0.3.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.2.3...v0.3.0) - 2015-07-10##
 
 ###Feature###
