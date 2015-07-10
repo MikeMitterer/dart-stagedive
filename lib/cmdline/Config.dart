@@ -115,7 +115,7 @@ class Config {
     }
 
     void _overwriteSettingsWithConfigFile() {
-        final File file = new File("${configfolder}/${configfile}");
+        final File file = new File("${configfolder}${path.separator}${configfile}");
         if(!file.existsSync()) {
             return;
         }

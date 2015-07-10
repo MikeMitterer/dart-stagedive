@@ -71,7 +71,7 @@ class Application {
         final List<_TemplateInfo> templateInfos = _getTemplateInfos(config);
 
         templateInfos.forEach((final _TemplateInfo templateinfo) {
-            final File manifest = new File("${templateinfo.templatePath}/manifest.yaml");
+            final File manifest = new File("${templateinfo.templatePath}${path.separator}manifest.yaml");
             if(manifest.existsSync()) {
                 final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
 
@@ -99,19 +99,19 @@ class Application {
             });
 
         } on Error {
-            _logger.shout("Could not find a Template for ${config.templateproject}/${config.template}");
+            _logger.shout("Could not find a Template for ${config.templateproject}${path.separator}${config.template}");
             return;
         }
 
         final String targetFolder = config.newprojectdir;
 
-        final Directory dirTemplate = new Directory(templateinfo.templatePath.replaceFirst(new RegExp(r"/$"), ""));
+        final Directory dirTemplate = new Directory(templateinfo.templatePath.replaceFirst(new RegExp("${path.separator}\$"), ""));
         if (!dirTemplate.existsSync()) {
             _logger.shout("${dirTemplate.path} does not exist!");
             return;
         }
 
-        final File manifest = new File("${dirTemplate.path}/manifest.yaml");
+        final File manifest = new File("${dirTemplate.path}${path.separator}manifest.yaml");
         if (!manifest.existsSync()) {
             _logger.shout("Could not find a manifest.yaml in ${dirTemplate.path}");
         }
@@ -122,7 +122,7 @@ class Application {
         }
 
         // e.g. example/sample1
-        final Directory dirTargetBase = new Directory(targetFolder.replaceFirst(new RegExp(r"/$"), ""));
+        final Directory dirTargetBase = new Directory(targetFolder.replaceFirst(new RegExp("${path.separator}\$"), ""));
         if (!dirTargetBase.existsSync()) {
             dirTargetBase.createSync(recursive: true);
         }
@@ -157,16 +157,17 @@ class Application {
         _logger.fine("Source-BaseFolder ${dirTemplate.path}");
         _logger.fine("Target-BaseFolder ${dirTargetBase.path}");
 
+
         dirTemplate.listSync(recursive: true)
             // exclude manifest
-            .where((final FileSystemEntity entity) => !entity.path.endsWith("/manifest.yaml"))
+            .where((final FileSystemEntity entity) => !entity.path.endsWith("${path.separator}manifest.yaml"))
                 .forEach((final FileSystemEntity entity) {
 
-                    final String entityPath = entity.path.replaceFirst("${dirTemplate.path}/", "");
+                    final String entityPath = entity.path.replaceFirst("${dirTemplate.path}${path.separator}", "");
                     //_logger.info("EntityPath: ${entityPath} (Orig: ${entity.path})");
 
                     if (FileSystemEntity.isDirectorySync(entity.path)) {
-                        final Directory dirTarget = new Directory("${dirTargetBase.path}/$entityPath");
+                        final Directory dirTarget = new Directory("${dirTargetBase.path}${path.separator}$entityPath");
                         //_logger.info("DirTarget: ${dirTarget.path}");
 
                         if (!dirTarget.existsSync()) {
@@ -176,7 +177,7 @@ class Application {
                     }
                     else {
                         final File src = new File(entity.path);
-                        final String targetFilename = _setVarInTargetFilename(settings,"${dirTargetBase.path}/${entityPath}");
+                        final String targetFilename = _setVarInTargetFilename(settings,"${dirTargetBase.path}${path.separator}${entityPath}");
                         final File target = new File(targetFilename);
 
                         _logger.fine("Copy: ${src.path} -> ${target.path}");
@@ -250,7 +251,7 @@ class Application {
             .where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
             .forEach((final FileSystemEntity entity) {
 
-                final File manifest = new File("${entity.path}/manifest.yaml");
+                final File manifest = new File("${entity.path}${path.separator}manifest.yaml");
                 if(manifest.existsSync()) {
                     final yaml.YamlMap map = yaml.loadYaml(manifest.readAsStringSync());
 
@@ -269,7 +270,7 @@ class Application {
                 packageName = ref.name;
                 final PackageRef latest = cache.getLatestVersion(packageName);
                 final Package package = latest.resolve();
-                final Directory dirTemplates = new Directory("${package.location.absolute.path}/lib/_templates");
+                final Directory dirTemplates = new Directory("${package.location.absolute.path}${path.separator}lib${path.separator}${path.separator}_templates");
 
                 _logger.fine("Scanning ${package.location.absolute.path}...");
                 if(dirTemplates.existsSync()) {
@@ -278,7 +279,7 @@ class Application {
             }
         });
 
-        final File conf = new File("${config.configfolder}/${config.configfile}");
+        final File conf = new File("${config.configfolder}${path.separator}${config.configfile}");
         if(conf.existsSync()) {
             final yaml.YamlMap map = yaml.loadYaml(conf.readAsStringSync());
             if(map["templatefolder"] != null /*&& path.basename(map["templatefolder"]) == "_templates"*/) {
