@@ -77,13 +77,22 @@ At the moment the there are two input types: `input` and `lowercase`.
 
 ### Important
 StageDive scans your installed packages (pub-cache).  
-This means StageDive does not recognize your local package. ('path:' in pubspec.yaml)  
+This means StageDive recognizes only installed packages by default.
+If you want to change this behaviour or if you want to test your templates before installing them
+do the following:  
 
-**But there is a solution:**  
 In your project folder, create `.stagedive/config.yaml`
 ```yaml
 templatefolder: lib/_templates
 ```
+
+or for multiple templates:
+```yaml
+templatefolder: 
+    - lib/_templates
+    - temp/_templates
+```
+
 With this - StageDive knows how to find your local templates!
  
 ### License

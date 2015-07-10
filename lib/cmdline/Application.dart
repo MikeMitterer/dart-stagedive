@@ -180,13 +180,20 @@ class Application {
                         final File target = new File(targetFilename);
 
                         _logger.fine("Copy: ${src.path} -> ${target.path}");
-                        String contents = src.readAsStringSync();
 
-                        settings.forEach((final Setting setting) {
-                            contents = contents.replaceAll(new RegExp("<%= ${setting.key} %>",multiLine: true,caseSensitive: false),setting.value);
-                        });
+                        try {
+                            String contents = src.readAsStringSync();
 
-                        target.writeAsStringSync(contents);
+                            settings.forEach((final Setting setting) {
+                                contents = contents.replaceAll(new RegExp("<%= ${setting.key} %>",multiLine: true,caseSensitive: false),setting.value);
+                            });
+
+                            target.writeAsStringSync(contents);
+
+                        } on FileSystemException catch(e) {
+                            // OK - if readAsString does not work - just copy it!
+                            src.copySync(target.path);
+                        }
                     }
         });
 
@@ -234,7 +241,13 @@ class Application {
         _logger.fine(PubCache.getSystemCacheLocation().absolute);
 
         void _scan(final String packagename,final String packageversion, final Directory dirTemplates) {
-            dirTemplates.listSync().where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
+            if(!dirTemplates.existsSync()) {
+                _logger.shout("${dirTemplates.path} does not exists!");
+                return;
+            }
+
+            dirTemplates.listSync()
+            .where((final FileSystemEntity entity) => FileSystemEntity.isDirectorySync(entity.path))
             .forEach((final FileSystemEntity entity) {
 
                 final File manifest = new File("${entity.path}/manifest.yaml");
@@ -268,9 +281,21 @@ class Application {
         final File conf = new File("${config.configfolder}/${config.configfile}");
         if(conf.existsSync()) {
             final yaml.YamlMap map = yaml.loadYaml(conf.readAsStringSync());
-            if(map["templatefolder"] != null && path.basename(map["templatefolder"]) == "_templates") {
-                final Directory dirTemplates = new Directory(map["templatefolder"]);
-                _scan("local","<not defined>",dirTemplates);
+            if(map["templatefolder"] != null /*&& path.basename(map["templatefolder"]) == "_templates"*/) {
+                final List<String> folders = new List<String>();
+                if(map["templatefolder"] is String) {
+
+                    folders.add(map["templatefolder"]);
+
+                } else if(map["templatefolder"] is yaml.YamlList) {
+
+                    final yaml.YamlList list = map["templatefolder"];
+                    list.forEach((final element) => folders.add(element.toString()));
+                }
+                folders.forEach((final String foldername) {
+                    final Directory dirTemplates = new Directory(foldername);
+                    _scan("local","<not defined>",dirTemplates);
+                });
             }
         }
         return templates;
