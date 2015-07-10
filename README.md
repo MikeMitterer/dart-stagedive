@@ -78,6 +78,7 @@ At the moment the there are two input types: `input` and `lowercase`.
 
 - `input`:      Asks you the 'question' and stores the answer in the defined variable.
 - `lowercase`:  Same as input but changes the answer to lowercase.
+- `uppercase`:  Same as input but changes the answer to uppercase.
 
 ### Important
 StageDive scans your installed packages (pub-cache).  
