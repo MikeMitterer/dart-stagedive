@@ -33,16 +33,22 @@ class Prompter {
 
         if(questions.isNotEmpty) {
             _logger.info("Please anser the followoing questions");
-            _logger.info("If the question has a [?] sign it shows a hint if you enter a question mark\n");
+            _logger.info("Some questions may have special markers.\n");
+            _logger.info("  - [?] For this question is a 'hint' available. Enter a question mark and you'll see it");
+            _logger.info("  - [l] Whatever you enter - it will be changed to lowercase");
+            _logger.info("  - [u] Whatever you enter - it will be changed to uppercase");
+
+            _logger.info("");
         }
+        int length = _maxQuestionLength(questions);
         questions.forEach( (final Question question) {
 
             String result = "";
             int questionCounter = 0;
             do {
-                final String askThisQuestion = "  ${question.question}${question.hint.isNotEmpty ? ' [?]' : ""} ";
+                String askThisQuestion = "  " + _addMarkers(question,question.question);
 
-                stdout.write(askThisQuestion);
+                stdout.write(askThisQuestion.padRight(length + 10));
                 result = stdin.readLineSync().trim();
                 if(result == "?" && question.hint.isNotEmpty) {
                     _logger.info("    - ${question.hint}\n");
@@ -63,11 +69,44 @@ class Prompter {
             if(question.type == InputType.LOWERCASE) {
                 question.result = result.toLowerCase();
             }
+            if(question.type == InputType.UPPERCASE) {
+                question.result = result.toUpperCase();
+            }
             settings.add(new Setting(question.name,question.result));
         });
     }
 
     //- private -----------------------------------------------------------------------------------
+
+    String _addMarkers(final Question question, String askThisQuestion) {
+        bool hasColon = askThisQuestion.endsWith(":");
+        if(hasColon) {
+            askThisQuestion = askThisQuestion.replaceFirst(new RegExp(r":$"),"");
+        }
+
+        final List<String> markers = new List<String>();
+
+        if(question.hint.isNotEmpty) {
+            markers.add("?");
+        }
+        if(question.type == InputType.LOWERCASE) {
+            markers.add("l");
+        }
+        if(question.type == InputType.UPPERCASE) {
+            markers.add("u");
+        }
+
+        return "${askThisQuestion.trim()} [${markers.join(",")}]${hasColon ? ':' : ''} ";
+    }
+
+    int _maxQuestionLength(final List<Question> questions) {
+        int length = 0;
+        questions.forEach((final Question question) {
+            length = max(length, question.question.length);
+        });
+
+        return length;
+    }
 }
 
 

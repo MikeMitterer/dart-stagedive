@@ -20,7 +20,7 @@
 part of stagedive;
 
 enum InputType {
-    INPUT, LOWERCASE
+    INPUT, LOWERCASE, UPPERCASE
 }
 
 abstract class Questions {
@@ -62,7 +62,7 @@ class QuestionsFromManifest implements Questions {
             });
 
             _questions.add(new Question(
-                _getType( map["type"]),
+                _getType( (node as yaml.YamlMap)["type"]),
                     name,
                     (node as yaml.YamlMap)["question"],
                     _getHint((node as yaml.YamlMap)["hint"]))
@@ -83,6 +83,8 @@ class QuestionsFromManifest implements Questions {
         switch(typeAsString.toLowerCase()) {
             case "lowercase":
                 return InputType.LOWERCASE;
+            case "uppercase":
+                return InputType.UPPERCASE;
             default:
                 return defaultType;
         }
@@ -96,4 +98,5 @@ class QuestionsFromManifest implements Questions {
             return fieldvalue;
         }
     }
+
 }
