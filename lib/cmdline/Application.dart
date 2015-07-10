@@ -77,7 +77,7 @@ class Application {
 
                 final String indention = config.loglevel == "debug" ? "    " : "";
                 final String name = map[TEMPLATENAME];
-                final String sampleName = ("'${name}'").padRight(20);
+                final String sampleName = ("'${name}'").padRight(25);
                 _logger.info("${indention}${sampleName} Package: ${templateinfo.package.padRight(15)}"
                                                         "Template name: ${templateinfo.basename.padRight(15)}"
                                                         "Version: ${templateinfo.version}");
