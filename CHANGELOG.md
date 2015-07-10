@@ -1,6 +1,11 @@
 #Change Log for stagedive#
 StageDive creates a template-based project for you
 
+##[v0.2.1](http://github.com/mikemitterer/dart-stagedive/compare/v0.2.0...v0.2.1) - 2015-07-10##
+
+###Feature###
+* Multiple templates in config.yaml [78a3e24](https://github.com/mikemitterer/dart-stagedive/commit/78a3e24de3d62409a14d7b7d3c16c0ae4ad48f10)
+
 ##[v0.2.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.1.0...v0.2.0) - 2015-07-09##
 
 ###Feature###
