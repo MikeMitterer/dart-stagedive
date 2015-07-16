@@ -88,7 +88,7 @@ class Application {
 
                 final String indention = config.loglevel == "debug" ? "    " : "";
                 final String name = map[_Manifest.TEMPLATENAME];
-                final String sampleName = ("'${name}'").padRight(25);
+                final String sampleName = ("'${name}'").padRight(30);
                 _logger.info("${indention}${sampleName} Package: ${templateinfo.package.padRight(15)}"
                                                         "Template name: ${templateinfo.basename.padRight(15)}"
                                                         "Version: ${templateinfo.version}");
