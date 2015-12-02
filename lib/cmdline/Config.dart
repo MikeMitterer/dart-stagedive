@@ -88,15 +88,6 @@ class Config {
 
     void _overwriteSettingsWithArgResults() {
 
-        /// Makes sure that path does not end with a /
-        String checkPath(final String arg) {
-            String path = arg;
-            if(path.endsWith("/")) {
-                path = path.replaceFirst(new RegExp("/\$"),"");
-            }
-            return path;
-        }
-
         if(_argResults.wasParsed(Options._ARG_LOGLEVEL)) {
             _settings[Options._ARG_LOGLEVEL] = _argResults[Options._ARG_LOGLEVEL];
         }
