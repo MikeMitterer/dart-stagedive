@@ -16,18 +16,19 @@ executables:
   stagedive:
 
 dependencies:
-  browser: any
+  browser: ^0.10.0
 
-  logging: any
-  logging_handlers: any
-  console_log_handler: any
+  logging: ^0.11.0
+  logging_handlers: ^0.8.0
+  console_log_handler: ^0.1.0
 
-  validate: any
+  validate: ^1.0.0
 
-  args: any
-  yaml: any
+  args: ^0.13.0
+  yaml: ^2.1.0
 
   pub_cache: "0.0.1+2"
 
 dev_dependencies:
   test: any
+  grinder: any
