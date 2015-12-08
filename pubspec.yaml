@@ -6,7 +6,7 @@ homepage: https://github.com/MikeMitterer/dart-stagedive
 version: 0.3.3
 
 environment:
-  sdk: '>=1.0.0 <2.0.0'
+  sdk: ">=1.8.0 <2.0.0"
 
 # Add the bin/stagedive.dart script to the scripts pub installs.
 # Activate local repo:
@@ -27,7 +27,7 @@ dependencies:
   args: ^0.13.0
   yaml: ^2.1.0
 
-  pub_cache: "0.0.1+2"
+  pub_cache: ^0.1.0
 
 dev_dependencies:
   test: any
