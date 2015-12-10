@@ -3,19 +3,16 @@
 
 library <%= basename %>.test;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:<%= basename %>/<%= basename %>.dart';
 
 main() {
   group('A group of tests', () {
-    Awesome awesome;
 
-    setUp(() {
-      awesome = new Awesome();
-    });
+    setUp(() { });
 
     test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
+      expect(true, isTrue);
     });
   });
 }

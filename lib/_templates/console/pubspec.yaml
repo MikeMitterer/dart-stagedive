@@ -31,3 +31,4 @@ dependencies:
 
 dev_dependencies:
   test: any
+  grinder: any
