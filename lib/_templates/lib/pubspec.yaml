@@ -1,6 +1,6 @@
 name: <%= basename %>
 description: Add your description for <%= basename %>
-author: <%= name %> <%= email %>
+author: <%= name %> <<%= email %>>
 homepage: https://github.com/<%= name %>/dart-<%= basename %>
 
 version: 1.0.0
