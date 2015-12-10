@@ -1,6 +1,12 @@
 # Change Log for stagedive
 StageDive creates a template-based project for you
 
+## [v0.4.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.3.3...v0.4.0) - 2015-12-10
+
+### Feature
+* Lib-Sample added [a5e3878](https://github.com/mikemitterer/dart-stagedive/commit/a5e3878d04f20d943f590d44d44fcb37066c7dcf)
+* Grinder support [9ece8b1](https://github.com/mikemitterer/dart-stagedive/commit/9ece8b13c548a35ad064a3d01ea26276cc4d19ec)
+
 ## [v0.3.3](http://github.com/mikemitterer/dart-stagedive/compare/v0.3.2...v0.3.3) - 2015-12-08
 
 ### Docs
