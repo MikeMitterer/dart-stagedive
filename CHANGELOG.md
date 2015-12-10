@@ -1,6 +1,11 @@
 # Change Log for stagedive
 StageDive creates a template-based project for you
 
+## [v0.4.1](http://github.com/mikemitterer/dart-stagedive/compare/v0.4.0...v0.4.1) - 2015-12-10
+
+### Fixes
+* lib-template had 'executable' in pubspec [b6ec590](https://github.com/mikemitterer/dart-stagedive/commit/b6ec590f1a4520c2d49ecd33fee79c6862b4aa96)
+
 ## [v0.4.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.3.3...v0.4.0) - 2015-12-10
 
 ### Feature
