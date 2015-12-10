@@ -1,6 +1,11 @@
 # Change Log for stagedive
 StageDive creates a template-based project for you
 
+## [v0.4.2](http://github.com/mikemitterer/dart-stagedive/compare/v0.4.1...v0.4.2) - 2015-12-10
+
+### Fixes
+* Authors email was without <...> [f2b3d34](https://github.com/mikemitterer/dart-stagedive/commit/f2b3d3485a74167895f68787750a900121630c50)
+
 ## [v0.4.1](http://github.com/mikemitterer/dart-stagedive/compare/v0.4.0...v0.4.1) - 2015-12-10
 
 ### Fixes
