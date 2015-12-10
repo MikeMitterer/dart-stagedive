@@ -1,0 +1,14 @@
+# templatename is not optional!
+templatename: Simple Lib
+
+prompts:
+  name:
+    type: input
+    question: "Add your name:"
+    hint: "Used for the pubspec 'name:' field"
+
+  email:
+    type: input
+    question: "Your email address:"
+    hint: "Used for the pubspec 'email:' field"
+
