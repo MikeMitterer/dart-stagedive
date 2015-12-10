@@ -8,15 +8,6 @@ version: 1.0.0
 environment:
   sdk: '>=1.0.0 <2.0.0'
 
-# Add the bin/<%= basename %>.dart script to the scripts pub installs.
-# Activate local repo:
-#   pub global activate --source path .
-# Decativate local repo:
-#   pub global deactivate <%= basename %>
-#
-executables:
-  <%= basename %>:
-
 dependencies:
   browser: any
 
