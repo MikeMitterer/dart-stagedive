@@ -25,6 +25,7 @@ Uninstall
 
 ```shell
 Usage: stagedive -n <new project folder> -p <template project> -t <template name>
+    -e, --extension          Template extension, stripped during copy
     -s, --settings           Prints settings
     -h, --help               Shows this message
     -l, --list               List available templates
@@ -56,6 +57,12 @@ There is one extra variable: `basename`
  
 File-Content-Format: `<%= varname %>`  
 File-Name-Format: `{varname}`
+
+The `-e` option allows you to specify a template extension that will
+be stripped when copying files from the template to their new
+locations. This lets you distinguish between Dart files and Dart file
+templates, for example, in situations where you have tools that
+blindly operate on all `.dart` files in your project.
 
 ### Sample manifest.yaml
 
