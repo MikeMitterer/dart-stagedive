@@ -20,7 +20,7 @@ class Config {
         _settings[Options._ARG_NEW_PROJECT_DIR]     = '';
         _settings[Options._ARG_TEMPLATE_PROJECT]    = '';
         _settings[Options._ARG_TEMPLATE]            = '';
-        _settings[Options._ARG_EXTENSION]           = '';
+        _settings[Options._ARG_STRIP_EXTENSION]     = '';
 
         _settings[Config._MANIFEST]                 = 'manifest.yaml';
 
@@ -37,7 +37,13 @@ class Config {
     String get newprojectdir => _settings[Options._ARG_NEW_PROJECT_DIR];
     String get templateproject => _settings[Options._ARG_TEMPLATE_PROJECT];
     String get template => _settings[Options._ARG_TEMPLATE];
-    String get extension => _settings[Options._ARG_EXTENSION];
+
+    /// Returns the specified extension and makes sure that the extension starts with a dot
+    String get strip_extension {
+        final String extension = _settings[Options._ARG_STRIP_EXTENSION];
+        if(extension.isEmpty) { return extension; }
+        return extension.startsWith(".") ? extension : ".${extension}";
+    }
 
     String get manifestfile => _settings[Config._MANIFEST];
 
@@ -54,6 +60,8 @@ class Config {
         settings["New project folder"]                      = newprojectdir.isNotEmpty ? newprojectdir : "<not set>";
         settings["Template project"]                        = templateproject.isNotEmpty ? templateproject : "<not set>";
         settings["Templatename"]                            = template.isNotEmpty ? template : "<not set>";
+
+        settings["Strip this extension"]                    = strip_extension.isNotEmpty ? strip_extension : "<not set>";
 
         settings["Manifest file"]                           = manifestfile;
 
@@ -106,8 +114,8 @@ class Config {
             _settings[Options._ARG_TEMPLATE] = _argResults[Options._ARG_TEMPLATE];
         }
 
-        if (_argResults.wasParsed(Options._ARG_EXTENSION)) {
-            _settings[Options._ARG_EXTENSION] = _argResults[Options._ARG_EXTENSION];
+        if (_argResults.wasParsed(Options._ARG_STRIP_EXTENSION)) {
+            _settings[Options._ARG_STRIP_EXTENSION] = _argResults[Options._ARG_STRIP_EXTENSION];
         }
     }
 

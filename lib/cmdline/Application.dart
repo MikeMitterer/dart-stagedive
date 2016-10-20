@@ -188,7 +188,12 @@ class Application {
                     }
                     else {
                         final File src = new File(entity.path);
-                        final String targetFilename = _setVarInTargetFilename(config, settings,"${dirTargetBase.path}${path.separator}${entityPath}");
+                        final String tempFilename = _replaceVarInTargetFilename(
+                            settings,"${dirTargetBase.path}${path.separator}${entityPath}"
+                        );
+
+                        final String targetFilename = _stripExtensionFromFilename(config,tempFilename);
+
                         final File target = new File(targetFilename);
 
                         _logger.fine("Copy: ${src.path} -> ${target.path}");
@@ -236,16 +241,27 @@ class Application {
         Logger.root.onRecord.listen(new LogPrintHandler(messageFormat: "%m"));
     }
 
-    String _setVarInTargetFilename(Config config, final List<Setting> settings, String filename) {
-        if (filename.endsWith(config.extension)) {
-            var index = filename.lastIndexOf(config.extension);
-            filename = filename.substring(0, index);
-        }
+
+    String _replaceVarInTargetFilename(final List<Setting> settings, String filename) {
         settings.forEach((final Setting setting) {
             if(filename.indexOf("{${setting.key}") != -1) {
                 filename = filename.replaceAll("{${setting.key}}",setting.value);
             }
         });
+
+        return filename;
+    }
+
+    /// Removes the specified (via -e (cmdline) or strip_extension (config.yaml)) extension
+    /// from the given [filename]
+    ///
+    /// Thanks to https://github.com/georgelesica-wf
+    /// PR: https://github.com/MikeMitterer/dart-stagedive/pulls?q=is%3Apr+is%3Aclosed
+    String _stripExtensionFromFilename(final Config config, String filename) {
+        if (config.strip_extension.isNotEmpty && filename.endsWith(config.strip_extension)) {
+            final int index = filename.lastIndexOf(config.strip_extension);
+            filename = filename.substring(0, index);
+        }
 
         return filename;
     }

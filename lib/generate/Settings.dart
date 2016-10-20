@@ -32,6 +32,7 @@ class Setting {
 abstract class Settings {
 
     List<Setting> get settings;
+
     //- private -----------------------------------------------------------------------------------
 }
 

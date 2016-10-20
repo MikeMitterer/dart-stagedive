@@ -1,1 +1,2 @@
 templatefolder: lib/_templates
+#strip_extension: xml

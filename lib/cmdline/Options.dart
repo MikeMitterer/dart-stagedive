@@ -4,7 +4,7 @@ part of stagedive;
 class Options {
     static const APPNAME                      = 'stagedive';
 
-    static const _ARG_EXTENSION               = 'extension';
+    static const _ARG_STRIP_EXTENSION         = 'strip_extension';
     static const _ARG_HELP                    = 'help';
     static const _ARG_LOGLEVEL                = 'loglevel';
     static const _ARG_SETTINGS                = 'settings';
@@ -56,9 +56,9 @@ class Options {
 
             ..addOption(_ARG_TEMPLATE,           abbr: 't', help: "Template name (e.g. console)")
 
-            ..addOption(_ARG_LOGLEVEL,           abbr: 'v', help: "Sets the appropriate loglevel", allowed: ['info', 'debug', 'warning'])
+            ..addOption(_ARG_STRIP_EXTENSION,    abbr: 'e', help: "Template extension, stripped during copy (e.g. [.]tmpl)", defaultsTo: '')
 
-            ..addOption(_ARG_EXTENSION,          abbr: 'e', help: "Template extension, stripped during copy", defaultsTo: '')
+            ..addOption(_ARG_LOGLEVEL,           abbr: 'v', help: "Sets the appropriate loglevel", allowed: ['info', 'debug', 'warning'])
 
         ;
 
