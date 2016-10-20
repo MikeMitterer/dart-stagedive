@@ -188,7 +188,7 @@ class Application {
                     }
                     else {
                         final File src = new File(entity.path);
-                        final String targetFilename = _setVarInTargetFilename(settings,"${dirTargetBase.path}${path.separator}${entityPath}");
+                        final String targetFilename = _setVarInTargetFilename(config, settings,"${dirTargetBase.path}${path.separator}${entityPath}");
                         final File target = new File(targetFilename);
 
                         _logger.fine("Copy: ${src.path} -> ${target.path}");
@@ -236,7 +236,11 @@ class Application {
         Logger.root.onRecord.listen(new LogPrintHandler(messageFormat: "%m"));
     }
 
-    String _setVarInTargetFilename(final List<Setting> settings, String filename) {
+    String _setVarInTargetFilename(Config config, final List<Setting> settings, String filename) {
+        if (filename.endsWith(config.extension)) {
+            var index = filename.lastIndexOf(config.extension);
+            filename = filename.substring(0, index);
+        }
         settings.forEach((final Setting setting) {
             if(filename.indexOf("{${setting.key}") != -1) {
                 filename = filename.replaceAll("{${setting.key}}",setting.value);

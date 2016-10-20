@@ -20,6 +20,7 @@ class Config {
         _settings[Options._ARG_NEW_PROJECT_DIR]     = '';
         _settings[Options._ARG_TEMPLATE_PROJECT]    = '';
         _settings[Options._ARG_TEMPLATE]            = '';
+        _settings[Options._ARG_EXTENSION]           = '';
 
         _settings[Config._MANIFEST]                 = 'manifest.yaml';
 
@@ -36,6 +37,7 @@ class Config {
     String get newprojectdir => _settings[Options._ARG_NEW_PROJECT_DIR];
     String get templateproject => _settings[Options._ARG_TEMPLATE_PROJECT];
     String get template => _settings[Options._ARG_TEMPLATE];
+    String get extension => _settings[Options._ARG_EXTENSION];
 
     String get manifestfile => _settings[Config._MANIFEST];
 
@@ -102,6 +104,10 @@ class Config {
 
         if(_argResults.wasParsed(Options._ARG_TEMPLATE)) {
             _settings[Options._ARG_TEMPLATE] = _argResults[Options._ARG_TEMPLATE];
+        }
+
+        if (_argResults.wasParsed(Options._ARG_EXTENSION)) {
+            _settings[Options._ARG_EXTENSION] = _argResults[Options._ARG_EXTENSION];
         }
     }
 
