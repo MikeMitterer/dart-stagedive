@@ -1,6 +1,11 @@
 # Change Log for stagedive
 StageDive creates a template-based project for you
 
+## [v0.5.1](http://github.com/mikemitterer/dart-stagedive/compare/v0.5.0...v0.5.1) - 2016-11-16
+
+### Docs
+* Strong-Mode support [3f58daf](https://github.com/mikemitterer/dart-stagedive/commit/3f58daf07e3ab87fbc669a8bc0acb29f097bea8c)
+
 ## [v0.5.0](http://github.com/mikemitterer/dart-stagedive/compare/v0.4.2...v0.5.0) - 2016-10-20
 
 ### Feature
