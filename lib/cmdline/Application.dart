@@ -238,7 +238,7 @@ class Application {
                 Logger.root.level = Level.INFO;
         }
 
-        Logger.root.onRecord.listen(new LogPrintHandler(messageFormat: "%m"));
+        Logger.root.onRecord.listen(new LogPrintHandler(transformer: transformerMessageOnly));
     }
 
 

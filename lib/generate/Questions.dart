@@ -57,8 +57,8 @@ class QuestionsFromManifest implements Questions {
         map["prompts"].forEach((final dynamic name, final yaml.YamlNode node) {
 
             _logger.fine("    $name");
-            (node as yaml.YamlMap).forEach((final dynamic key, final String scalar) {
-                _logger.fine("        ${key}: ${node.value[key]}");
+            (node as yaml.YamlMap).forEach((final dynamic key, _) {
+                _logger.fine("        ${key}: ${node.value[key.toString()]}");
             });
 
             _questions.add(new Question(

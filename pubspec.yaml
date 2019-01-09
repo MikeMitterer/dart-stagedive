@@ -6,7 +6,7 @@ homepage: https://github.com/MikeMitterer/dart-stagedive
 version: 0.5.1
 
 environment:
-  sdk: ">=1.8.0 <2.0.0"
+  sdk: ">=2.0.0 <3.0.0"
 
 # Add the bin/stagedive.dart script to the scripts pub installs.
 # Activate local repo:
@@ -16,19 +16,19 @@ executables:
   stagedive:
 
 dependencies:
-  browser: ^0.10.0
-
-  logging: ^0.11.0
-  logging_handlers: ^0.8.0
-  console_log_handler: ^0.1.0
+  console_log_handler: ^1.0.0
+  # path: /Volumes/Daten/DevLocal/DevDart/ConsoleLogHandler
 
   validate: ^1.0.0
 
-  args: ^0.13.0
+  args: ^1.0.0
   yaml: ^2.1.0
 
-  pub_cache: ^0.1.0
+  pub_cache: ^0.2.0
 
 dev_dependencies:
   test: any
   grinder: any
+
+  build_runner: any
+  build_test: any
